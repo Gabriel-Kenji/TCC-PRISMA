@@ -1,0 +1,134 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export default {
+  async createEmpresas(req, res) {
+    try {
+      const { cnpj, nome, email, descricao, imagem_perfil, senha, telefone, celular, facebook, whatsapp, linkedin, telegram } =
+        req.body;
+
+      let empresa = await prisma.empresa.findUnique({ where: { cnpj } });
+
+      if (empresa) {
+        return res.json({ error: "Cnpj ja atribuido a uma empresa" });
+      }
+
+      empresa = await prisma.empresa.findUnique({ where: { email } });
+
+      if (empresa) {
+        return res.json({ error: "Email ja atribuido a uma empresa" });
+      }
+
+      empresa = await prisma.empresa.create({
+        data: {
+          cnpj,
+          nome,
+          email,
+          descricao,
+          imagem_perfil,
+          senha,
+          Contatos_empresa: {
+            create: {
+              telefone,
+            },
+          },
+        },
+        include: {
+          Contatos_empresa: true,
+        },
+      });
+
+      return res.json(empresa);
+    } catch (error) {
+      return res.json(error);
+    }
+  },
+
+  async findAllEmpresas(req, res) {
+    try {
+      const empresas = await prisma.empresa.findMany({
+        include: {
+          Contatos_empresa: true,
+        },
+      });
+      return res.json(empresas);
+    } catch (error) {
+      return res.json({ error });
+    }
+  },
+
+  async findEmpresa(req, res) {
+    try {
+      const { cnpj } = req.params;
+      const empresas = await prisma.empresa.findUnique({
+        where: { cnpj: Number(cnpj) },
+        include: {
+          Contatos_empresa: true,
+        },
+      });
+      if (!empresas) {
+        return res.json({ error: "Não foi possivel encontrar essa empresa" });
+      }
+      return res.json(empresas);
+    } catch (error) {
+      return res.json({ error });
+    }
+  },
+
+  async updateEmpresa(req, res) {
+    try {
+      const { cnpj } = req.params;
+      const { nome, email, descricao, imagem_perfil, senha, telefone } = req.body;
+
+      let empresas = await prisma.empresa.findUnique({
+        where: { cnpj: Number(cnpj) },
+      });
+
+      if (!empresas)
+        return res.json({ error: "Não foi possivel encontrar essa empresa" });
+
+      empresas = await prisma.empresa.update({
+        where: { cnpj: Number(cnpj) },
+        data: {
+          nome,
+          email,
+          descricao,
+          imagem_perfil,
+          senha,
+          Contatos_empresa: {
+            update: {
+              telefone,
+            },
+          },
+        },
+        include: {
+          Contatos_empresa: true,
+        },
+      });
+
+      return res.json(empresas);
+    } catch (error) {
+      return res.json({ error });
+    }
+  },
+
+  async deleteEmpresa(req, res) {
+    try {
+      const { cnpj } = req.params;
+
+      let empresas = await prisma.empresa.findUnique({
+        where: { cnpj: Number(cnpj) },
+      });
+
+      if (!empresas)
+        return res.json({ error: "Não foi possivel encontrar essa empresa" });
+
+      await prisma.empresa.delete({ where: { cnpj: Number(cnpj) } });
+
+      return res.json({ message: "Empresa deletada com sucesso" });
+    } catch (error) {
+      return res.json({ error });
+    }
+  },
+};

@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Empresa {
+  cnpj             Int               @id
+  nome             String
+  descricao        String?
+  imagem_perfil    String?
+  senha            String
+  Contatos_empresa Contatos_empresa?
+  email            String            @unique
+  Fretes           Frete[]
+}
+
+model Contatos_empresa {
+  id        String  @id @default(uuid())
+  telefone  Int
+  celular   Int?
+  facebook  String?
+  whatsapp  String?
+  linkedin  String?
+  telegram  String?
+  empresa   Empresa @relation(fields: [empresaId], references: [cnpj], onDelete: Cascade)
+  empresaId Int     @unique
+}
+
+model Veiculo {
+  id           String         @id @default(uuid())
+  veiculo      String         @unique
+  Caminhoneiro Caminhoneiro[]
+}
+
+model Carroceria {
+  id           String         @id @default(uuid())
+  carroceria   String         @unique
+  Caminhoneiro Caminhoneiro[]
+}
+
+model Caminhoneiro {
+  cpf          Int        @id
+  nome         String
+  senha        String
+  email        String     @unique
+  celular      Int?
+  notificacao  Boolean
+  carroceria   Carroceria @relation(fields: [carroceriaId], references: [id])
+  carroceriaId String     @unique
+  veiculo      Veiculo    @relation(fields: [veiculoId], references: [id])
+  veiculoId    String     @unique
+}
+
+model Especie {
+  id      String  @id @default(uuid())
+  especie String  @unique
+  Fretes  Frete[]
+}
+
+model Frete {
+  id                       String   @id @default(uuid())
+  cidade_origem            String
+  cidade_destino           String
+  estado_origem            String
+  estado_destino           String
+  descricao                String?
+  forma_pagamento          String?
+  produto                  String?
+  preco                    String
+  peso                     String?
+  porcentagem_adiantamento String?
+  tipo_carga               String?
+  data_postagem            DateTime @default(now())
+  data_coleta              DateTime
+  data_entrega             DateTime
+  ativo                    Boolean
+  agenciamento             Boolean?
+  lona                     Boolean?
+  pedagio                  Boolean?
+  rastreamento             Boolean?
+  empresa                  Empresa  @relation(fields: [empresaId], references: [cnpj])
+  empresaId                Int
+  especie                  Especie  @relation(fields: [especieId], references: [id])
+  especieId                String
+}
