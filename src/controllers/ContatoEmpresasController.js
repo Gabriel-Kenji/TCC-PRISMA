@@ -1,9 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+const PrismaClient = require('@prisma/client');
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
 
-export default {
-  async findContatoEmpresa(req, res) {
+  async function findContatoEmpresa(req, res) {
     try {
       const { cnpj } = req.params;
       const empresas = await prisma.empresa.findUnique({
@@ -20,9 +19,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async updateContatoEmpresa(req, res) {
+  async function updateContatoEmpresa(req, res) {
     try {
       const { cnpj } = req.params;
       const { telefone, celular, facebook, whatsapp, linkedin, telegram } =
@@ -51,5 +50,7 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
-};
+  }
+
+  module.exports.updateContatoEmpresa = updateContatoEmpresa;
+  module.exports.findContatoEmpresa = findContatoEmpresa;

@@ -1,18 +1,18 @@
-import { Router } from "express";
+const Router = require('express');
 
-import EmpresasController from "./controllers/EmpresasController";
-import ContatoEmpresasController from "./controllers/ContatoEmpresasController";
-import CarroceriaController from "./controllers/CarroceriaController";
-import VeiculoController  from "./controllers/VeiculoController";
-import CaminhoneiroController from "./controllers/CaminhoneiroController";
-import EspecieController from "./controllers/EspecieController";
-import FretesController from "./controllers/FretesController";
+const {createEmpresas, findAllEmpresas, findEmpresa, updateEmpresa, deleteEmpresa} = require( "./controllers/EmpresasController");
+const ContatoEmpresasController = require( "./controllers/ContatoEmpresasController");
+const CarroceriaController = require( "./controllers/CarroceriaController");
+const VeiculoController  = require( "./controllers/VeiculoController");
+const CaminhoneiroController = require( "./controllers/CaminhoneiroController");
+const EspecieController = require( "./controllers/EspecieController");
+const FretesController = require( "./controllers/FretesController");
 
 // import all controllers
 // import SessionController from './app/controllers/SessionController';
 
 
-const routes = new Router();
+const routes = new Router.Router();
 
 // Add routes
 // routes.get('/', SessionController.store);
@@ -22,11 +22,11 @@ const routes = new Router();
 
 // ROTAS EMPRESAS
 
-routes.post("/empresas", EmpresasController.createEmpresas);
-routes.get("/empresas", EmpresasController.findAllEmpresas);
-routes.get("/empresas/:cnpj", EmpresasController.findEmpresa);
-routes.put("/empresas/:cnpj", EmpresasController.updateEmpresa);
-routes.delete("/empresas/:cnpj", EmpresasController.deleteEmpresa);
+routes.post("/empresas", createEmpresas);
+routes.get("/empresas", findAllEmpresas);
+routes.get("/empresas/:cnpj", findEmpresa);
+routes.put("/empresas/:cnpj", updateEmpresa);
+routes.delete("/empresas/:cnpj", deleteEmpresa);
 
 
 // ROTAS CONTATO EMPRESAS

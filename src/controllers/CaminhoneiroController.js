@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+const PrismaClient = require('@prisma/client');
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
 
-export default {
-  async createCaminhoneiro(req, res) {
+
+  async function createCaminhoneiro(req, res) {
     try {
       const {
         cpf,
@@ -49,9 +49,9 @@ export default {
     } catch (error) {
       return res.json(error);
     }
-  },
+  }
 
-  async findAllCaminhoneiro(req, res) {
+  async function findAllCaminhoneiro(req, res) {
     try {
       const caminhoneiros = await prisma.caminhoneiro.findMany({
         include: {
@@ -63,9 +63,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async findCaminhoneiro(req, res) {
+  async function findCaminhoneiro(req, res) {
     try {
       const { cpf } = req.params;
       const caminhoneiros = await prisma.caminhoneiro.findUnique({
@@ -84,9 +84,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async updateCaminhoneiro(req, res) {
+  async function updateCaminhoneiro(req, res) {
     try {
       const { cpf } = req.params;
       const {
@@ -129,9 +129,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async deleteCaminhoneiro(req, res) {
+  async function deleteCaminhoneiro(req, res) {
     try {
       const { cpf } = req.params;
 
@@ -148,5 +148,11 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
-};
+  }
+
+
+  module.exports.createCaminhoneiro = createCaminhoneiro;
+  module.exports.deleteCaminhoneiro = deleteCaminhoneiro;
+  module.exports.findAllCaminhoneiro = findAllCaminhoneiro;
+  module.exports.findCaminhoneiro = findCaminhoneiro;
+  module.exports.updateCaminhoneiro = updateCaminhoneiro;

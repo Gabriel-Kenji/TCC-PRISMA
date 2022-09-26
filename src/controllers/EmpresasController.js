@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+const PrismaClient = require('@prisma/client');
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
 
-export default {
-  async createEmpresas(req, res) {
+
+  async function createEmpresas(req, res) {
     try {
       const { cnpj, nome, email, descricao, imagem_perfil, senha, telefone, celular, facebook, whatsapp, linkedin, telegram } =
         req.body;
@@ -43,9 +43,9 @@ export default {
     } catch (error) {
       return res.json(error);
     }
-  },
+  }
 
-  async findAllEmpresas(req, res) {
+  async function findAllEmpresas(req, res) {
     try {
       const empresas = await prisma.empresa.findMany({
         include: {
@@ -56,9 +56,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async findEmpresa(req, res) {
+  async function findEmpresa(req, res) {
     try {
       const { cnpj } = req.params;
       const empresas = await prisma.empresa.findUnique({
@@ -74,9 +74,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async updateEmpresa(req, res) {
+  async function updateEmpresa(req, res) {
     try {
       const { cnpj } = req.params;
       const { nome, email, descricao, imagem_perfil, senha, telefone } = req.body;
@@ -111,9 +111,9 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
+  }
 
-  async deleteEmpresa(req, res) {
+  async function deleteEmpresa(req, res) {
     try {
       const { cnpj } = req.params;
 
@@ -130,5 +130,12 @@ export default {
     } catch (error) {
       return res.json({ error });
     }
-  },
-};
+  }
+
+
+  module.exports.createEmpresas =  createEmpresas;
+  module.exports.deleteEmpresa = deleteEmpresa;
+  module.exports.findAllEmpresas = findAllEmpresas;
+  module.exports.findEmpresa = findEmpresa;
+  module.exports.updateEmpresa = updateEmpresa;
+
