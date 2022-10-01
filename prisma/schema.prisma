@@ -34,28 +34,31 @@ model Contatos_empresa {
 }
 
 model Veiculo {
-  id           String         @id @default(uuid())
-  veiculo      String         @unique
-  Caminhoneiro Caminhoneiro[]
+  id            String          @id @default(uuid())
+  veiculo       String          @unique
+  Caminhoneiro  Caminhoneiro[]
+  Veiculo_Frete Veiculo_Frete[]
 }
 
 model Carroceria {
-  id           String         @id @default(uuid())
-  carroceria   String         @unique
-  Caminhoneiro Caminhoneiro[]
+  id               String             @id @default(uuid())
+  carroceria       String             @unique
+  Caminhoneiro     Caminhoneiro[]
+  Carroceria_Frete Carroceria_Frete[]
 }
 
 model Caminhoneiro {
-  cpf          Int        @id
-  nome         String
-  senha        String
-  email        String     @unique
-  celular      Int?
-  notificacao  Boolean
-  carroceria   Carroceria @relation(fields: [carroceriaId], references: [id])
-  carroceriaId String     @unique
-  veiculo      Veiculo    @relation(fields: [veiculoId], references: [id])
-  veiculoId    String     @unique
+  cpf            Int              @id
+  nome           String
+  senha          String
+  email          String           @unique
+  celular        Int?
+  notificacao    Boolean
+  carroceria     Carroceria       @relation(fields: [carroceriaId], references: [id])
+  carroceriaId   String           @unique
+  veiculo        Veiculo          @relation(fields: [veiculoId], references: [id])
+  veiculoId      String           @unique
+  Procura_Fretes Procura_Fretes[]
 }
 
 model Especie {
@@ -65,7 +68,7 @@ model Especie {
 }
 
 model Frete {
-  id                       String   @id @default(uuid())
+  id                       String             @id @default(uuid())
   cidade_origem            String
   cidade_destino           String
   estado_origem            String
@@ -77,7 +80,7 @@ model Frete {
   peso                     String?
   porcentagem_adiantamento String?
   tipo_carga               String?
-  data_postagem            DateTime @default(now())
+  data_postagem            DateTime           @default(now())
   data_coleta              DateTime
   data_entrega             DateTime
   ativo                    Boolean
@@ -85,8 +88,37 @@ model Frete {
   lona                     Boolean?
   pedagio                  Boolean?
   rastreamento             Boolean?
-  empresa                  Empresa  @relation(fields: [empresaId], references: [cnpj])
+  empresa                  Empresa            @relation(fields: [empresaId], references: [cnpj])
   empresaId                Int
-  especie                  Especie  @relation(fields: [especieId], references: [id])
+  especie                  Especie            @relation(fields: [especieId], references: [id])
   especieId                String
+  Veiculo_Frete            Veiculo_Frete[]
+  Carroceria_Frete         Carroceria_Frete[]
+}
+
+model Veiculo_Frete {
+  id        String  @id @default(uuid())
+  veiculo   Veiculo @relation(fields: [veiculoId], references: [id])
+  veiculoId String
+  frete     Frete   @relation(fields: [freteId], references: [id])
+  freteId   String
+}
+
+model Carroceria_Frete {
+  id           String     @id @default(uuid())
+  carroceria   Carroceria @relation(fields: [carroceriaId], references: [id])
+  carroceriaId String
+  frete        Frete      @relation(fields: [freteId], references: [id])
+  freteId      String
+}
+
+model Procura_Fretes {
+  id             String       @id @default(uuid())
+  cidade_origem  String
+  cidade_destino String?
+  estado_origem  String
+  estado_destino String?
+  data_inicio    DateTime
+  cpf            Int
+  caminhoneiro   Caminhoneiro @relation(fields: [cpf], references: [cpf])
 }

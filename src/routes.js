@@ -1,12 +1,13 @@
 const Router = require('express');
 
-const {createEmpresas, findAllEmpresas, findEmpresa, updateEmpresa, deleteEmpresa} = require( "./controllers/EmpresasController");
+const EmpresasController = require( "./controllers/EmpresasController");
 const ContatoEmpresasController = require( "./controllers/ContatoEmpresasController");
 const CarroceriaController = require( "./controllers/CarroceriaController");
 const VeiculoController  = require( "./controllers/VeiculoController");
 const CaminhoneiroController = require( "./controllers/CaminhoneiroController");
 const EspecieController = require( "./controllers/EspecieController");
 const FretesController = require( "./controllers/FretesController");
+const ProcuraFretesController = require("./controllers/ProcuraFretesController")
 
 // import all controllers
 // import SessionController from './app/controllers/SessionController';
@@ -22,11 +23,11 @@ const routes = new Router.Router();
 
 // ROTAS EMPRESAS
 
-routes.post("/empresas", createEmpresas);
-routes.get("/empresas", findAllEmpresas);
-routes.get("/empresas/:cnpj", findEmpresa);
-routes.put("/empresas/:cnpj", updateEmpresa);
-routes.delete("/empresas/:cnpj", deleteEmpresa);
+routes.post("/empresas", EmpresasController.createEmpresas);
+routes.get("/empresas", EmpresasController.findAllEmpresas);
+routes.get("/empresas/:cnpj", EmpresasController.findEmpresa);
+routes.put("/empresas/:cnpj", EmpresasController.updateEmpresa);
+routes.delete("/empresas/:cnpj", EmpresasController.deleteEmpresa);
 
 
 // ROTAS CONTATO EMPRESAS
@@ -85,6 +86,14 @@ routes.get("/fretes", FretesController.findAllFrete);
 routes.get("/fretes/:id", FretesController.findFrete);
 routes.put("/fretes/:id", FretesController.updateFrete);
 routes.delete("/fretes/:id", FretesController.deleteFrete);
+
+// ROTAS PROCURA FRETES
+
+routes.post("/procura_fretes", ProcuraFretesController.createProcuraFrete);
+routes.get("/procura_fretes", ProcuraFretesController.findAllProcuraFretes);
+routes.get("/procura_fretes/:id", ProcuraFretesController.findProcuraFretes);
+routes.put("/procura_fretes/:id", ProcuraFretesController.updateProcuraFrete);
+routes.delete("/procura_fretes/:id", ProcuraFretesController.deleteProcuraFrete);
 
 
 module.exports = routes;

@@ -98,6 +98,37 @@ CREATE TABLE `Frete` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Veiculo_Frete` (
+    `id` VARCHAR(191) NOT NULL,
+    `veiculoId` VARCHAR(191) NOT NULL,
+    `freteId` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Carroceria_Frete` (
+    `id` VARCHAR(191) NOT NULL,
+    `carroceriaId` VARCHAR(191) NOT NULL,
+    `freteId` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Procura_Fretes` (
+    `id` VARCHAR(191) NOT NULL,
+    `cidade_origem` VARCHAR(191) NOT NULL,
+    `cidade_destino` VARCHAR(191) NULL,
+    `estado_origem` VARCHAR(191) NOT NULL,
+    `estado_destino` VARCHAR(191) NULL,
+    `data_inicio` DATETIME(3) NOT NULL,
+    `cpf` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Contatos_empresa` ADD CONSTRAINT `Contatos_empresa_empresaId_fkey` FOREIGN KEY (`empresaId`) REFERENCES `Empresa`(`cnpj`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -112,3 +143,18 @@ ALTER TABLE `Frete` ADD CONSTRAINT `Frete_empresaId_fkey` FOREIGN KEY (`empresaI
 
 -- AddForeignKey
 ALTER TABLE `Frete` ADD CONSTRAINT `Frete_especieId_fkey` FOREIGN KEY (`especieId`) REFERENCES `Especie`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Veiculo_Frete` ADD CONSTRAINT `Veiculo_Frete_veiculoId_fkey` FOREIGN KEY (`veiculoId`) REFERENCES `Veiculo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Veiculo_Frete` ADD CONSTRAINT `Veiculo_Frete_freteId_fkey` FOREIGN KEY (`freteId`) REFERENCES `Frete`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Carroceria_Frete` ADD CONSTRAINT `Carroceria_Frete_carroceriaId_fkey` FOREIGN KEY (`carroceriaId`) REFERENCES `Carroceria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Carroceria_Frete` ADD CONSTRAINT `Carroceria_Frete_freteId_fkey` FOREIGN KEY (`freteId`) REFERENCES `Frete`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Procura_Fretes` ADD CONSTRAINT `Procura_Fretes_cpf_fkey` FOREIGN KEY (`cpf`) REFERENCES `Caminhoneiro`(`cpf`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -27,6 +27,8 @@ async function createFrete(req, res) {
       rastreamento,
       empresaId,
       especieId,
+      veiculoId,
+      carroceriaId,
     } = req.body;
 
     console.log("teste");
@@ -54,7 +56,32 @@ async function createFrete(req, res) {
         rastreamento,
       },
     });
-    return res.json(fretes);
+
+    fretes.veiculosFrete = [];
+
+    for (const veiculosId of veiculoId) {
+      let veiculos = await prisma.veiculo_Frete.create({
+        data: { veiculoId: veiculosId, freteId: fretes.id },
+        include: {
+          veiculo: true,
+        },
+      });
+      fretes.veiculosFrete.push(veiculos);
+    }
+
+    fretes.carroceriaFrete = [];
+
+    for (const carroceriasId of carroceriaId) {
+      let carroceria = await prisma.carroceria_Frete.create({
+        data: { carroceriaId: carroceriasId, freteId: fretes.id },
+        include: {
+          carroceria: true,
+        },
+      });
+      fretes.carroceriaFrete.push(carroceria);
+    }
+
+    return res.json({ fretes });
   } catch (error) {
     return res.json(error);
   }
@@ -62,7 +89,14 @@ async function createFrete(req, res) {
 
 async function findAllFrete(req, res) {
   try {
-    const fretes = await prisma.frete.findMany({});
+    const fretes = await prisma.frete.findMany({
+      include: {
+        Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
+        Carroceria_Frete: {
+          include: { carroceria: { select: { carroceria: true } } },
+        },
+      },
+    });
     return res.json(fretes);
   } catch (error) {
     return res.json({ error });
@@ -74,6 +108,12 @@ async function findFrete(req, res) {
     const { id } = req.params;
     const frete = await prisma.frete.findUnique({
       where: { id },
+      include: {
+        Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
+        Carroceria_Frete: {
+          include: { carroceria: { select: { carroceria: true } } },
+        },
+      },
     });
     if (!frete) {
       return res.json({
@@ -133,8 +173,8 @@ async function updateFrete(req, res) {
         peso,
         porcentagem_adiantamento,
         tipo_carga,
-        data_coleta,
-        data_entrega,
+        data_coleta: datetime.create(data_coleta)._now,
+        data_entrega: datetime.create(data_entrega)._now,
         ativo,
         agenciamento,
         lona,
@@ -142,6 +182,11 @@ async function updateFrete(req, res) {
         rastreamento,
         empresaId,
         especieId,
+      },include: {
+        Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
+        Carroceria_Frete: {
+          include: { carroceria: { select: { carroceria: true } } },
+        },
       },
     });
     return res.json(frete);
