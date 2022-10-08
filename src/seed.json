@@ -1,0 +1,92 @@
+{
+    "tc_especie": [
+        {
+            "especie": "Diversos"
+        },
+        {
+            "especie": "Paletes"
+        },
+        {
+            "especie": "Container"
+        },
+        {
+            "especie": "Fardos"
+        },
+        {
+            "especie": "Big Bag"
+        },
+        {
+            "especie": "Grãos"
+        },
+        {
+            "especie": "Unidades"
+        },
+        {
+            "especie": "Caixas"
+        }
+    ],
+    "tc_veiculo": [
+        {
+            "veiculo": "Rodotrem"
+        },
+        {
+            "veiculo": "Bitrem"
+        },
+        {
+            "veiculo": "Vanderleia"
+        },
+        {
+            "veiculo": "Carreta LS"
+        },
+        {
+            "veiculo": "Carreta"
+        },
+        {
+            "veiculo": "Bitruck"
+        },
+        {
+            "veiculo": "Truck"
+        },
+        {
+            "veiculo": "Toco"
+        },
+        {
+            "veiculo": "3/4"
+        },
+        {
+            "veiculo": "VLC"
+        },
+        {
+            "veiculo": "Fiorino"
+        }
+    ],
+    "tc_carroceiria": [
+        {
+            "carroceria": "Baú"
+        },
+        {
+            "carroceria": "Baú Frigorífico"
+        },
+        {
+            "carroceria": "Sider"
+        },
+        {
+            "carroceria": "Caçamba"
+        },
+        {
+            "carroceria": "Grade Baixa"
+        },
+        {
+            "carroceria": "Graneleiro"
+        },
+        {
+            "carroceria": "Prancha"
+        },
+        {
+            "carroceria": "Porta Container"
+        },
+        {
+            "carroceria": "Apenas Cavalo"
+        }
+    ]
+}
