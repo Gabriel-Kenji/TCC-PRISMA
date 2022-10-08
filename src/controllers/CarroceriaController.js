@@ -2,7 +2,7 @@ const PrismaClient = require("@prisma/client");
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
 
-async function createCarroceria(req, res) {
+/*async function createCarroceria(req, res) {
   try {
     const { carroceria } = req.body;
 
@@ -23,11 +23,11 @@ async function createCarroceria(req, res) {
   } catch (error) {
     return res.json(error);
   }
-}
+}*/
 
 async function findAllCarroceria(req, res) {
   try {
-    const carrocerias = await prisma.carroceria.findMany({});
+    const carrocerias = await prisma.tc_carroceria.findMany({});
     return res.json(carrocerias);
   } catch (error) {
     return res.json({ error });
@@ -37,7 +37,7 @@ async function findAllCarroceria(req, res) {
 async function findCarroceria(req, res) {
   try {
     const { carroceria } = req.params;
-    const carrocerias = await prisma.carroceria.findUnique({
+    const carrocerias = await prisma.tc_carroceria.findUnique({
       where: { carroceria },
     });
     if (!carrocerias) {
@@ -51,7 +51,7 @@ async function findCarroceria(req, res) {
   }
 }
 
-async function updateCarroceria(req, res) {
+/*async function updateCarroceria(req, res) {
   try {
     const carroceriaAntiga = req.params.carroceria;
     const { carroceria } = req.body;
@@ -92,10 +92,10 @@ async function deleteCarroceria(req, res) {
   } catch (error) {
     return res.json({ error });
   }
-}
+}*/
 
-module.exports.createCarroceria = createCarroceria;
-module.exports.deleteCarroceria = deleteCarroceria;
+/*module.exports.createCarroceria = createCarroceria;
+module.exports.deleteCarroceria = deleteCarroceria;*/
 module.exports.findAllCarroceria = findAllCarroceria;
 module.exports.findCarroceria = findCarroceria;
-module.exports.updateCarroceria = updateCarroceria;
+//module.exports.updateCarroceria = updateCarroceria;

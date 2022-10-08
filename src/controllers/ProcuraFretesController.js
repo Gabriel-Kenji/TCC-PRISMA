@@ -18,7 +18,7 @@ async function createProcuraFrete(req, res) {
       cpf,
     } = req.body;
     
-    const Procurafretes = await prisma.procura_Fretes.create({
+    const Procurafretes = await prisma.tb_procura_fretes.create({
       data: {
         cidade_destino,
         cidade_origem,
@@ -42,7 +42,7 @@ async function createProcuraFrete(req, res) {
 
 async function findAllProcuraFretes(req, res) {
   try {
-    const procurafretes = await prisma.procura_Fretes.findMany({
+    const procurafretes = await prisma.tb_procura_fretes.findMany({
       include: {
         caminhoneiro: {
           include: { carroceria: true, veiculo: true },
@@ -58,7 +58,7 @@ async function findAllProcuraFretes(req, res) {
 async function findProcuraFretes(req, res) {
   try {
     const { id } = req.params;
-    const procurafretes = await prisma.procura_Fretes.findUnique({
+    const procurafretes = await prisma.tb_procura_fretes.findUnique({
       where: { id },
       include: {
         caminhoneiro: {
@@ -89,14 +89,14 @@ async function updateProcuraFrete(req, res) {
       cpf,
     } = req.body;
     
-    let procurafretes = await prisma.procura_Fretes.findUnique({
+    let procurafretes = await prisma.tb_procura_fretes.findUnique({
       where: { id },
     });
     if (!procurafretes)
       return res.json({
         error: "Não foi possivel encontrar esse procura fretes",
       });
-    procurafretes = await prisma.procura_Fretes.update({
+    procurafretes = await prisma.tb_procura_fretes.update({
       where: { id },
       data: {
         cidade_destino,
@@ -122,7 +122,7 @@ async function deleteProcuraFrete(req, res) {
   try {
     const { id } = req.params;
 
-    let procurafretes = await prisma.procura_Fretes.findUnique({
+    let procurafretes = await prisma.tb_procura_fretes.findUnique({
       where: { id },
     });
 
@@ -131,7 +131,7 @@ async function deleteProcuraFrete(req, res) {
         error: "Não foi possivel encontrar esse procura fretes",
       });
 
-    await prisma.procura_Fretes.delete({ where: { id } });
+    await prisma.tb_procura_fretes.delete({ where: { id } });
 
     return res.json({ message: "Frete deletado com sucesso" });
   } catch (error) {

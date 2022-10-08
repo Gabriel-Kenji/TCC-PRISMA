@@ -10,18 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Empresa {
+model tb_empresa {
   cnpj             Int               @id
   nome             String
   descricao        String?
   imagem_perfil    String?
   senha            String
-  Contatos_empresa Contatos_empresa?
+  Contatos_empresa tb_contatos_empresa?
   email            String            @unique
-  Fretes           Frete[]
+  Fretes           tb_frete[]
 }
 
-model Contatos_empresa {
+model tb_contatos_empresa {
   id        String  @id @default(uuid())
   telefone  Int
   celular   Int?
@@ -29,45 +29,25 @@ model Contatos_empresa {
   whatsapp  String?
   linkedin  String?
   telegram  String?
-  empresa   Empresa @relation(fields: [empresaId], references: [cnpj], onDelete: Cascade)
+  empresa   tb_empresa @relation(fields: [empresaId], references: [cnpj], onDelete: Cascade)
   empresaId Int     @unique
 }
 
-model Veiculo {
-  id            String          @id @default(uuid())
-  veiculo       String          @unique
-  Caminhoneiro  Caminhoneiro[]
-  Veiculo_Frete Veiculo_Frete[]
-}
-
-model Carroceria {
-  id               String             @id @default(uuid())
-  carroceria       String             @unique
-  Caminhoneiro     Caminhoneiro[]
-  Carroceria_Frete Carroceria_Frete[]
-}
-
-model Caminhoneiro {
+model tb_caminhoneiro {
   cpf            Int              @id
   nome           String
   senha          String
   email          String           @unique
   celular        Int?
   notificacao    Boolean
-  carroceria     Carroceria       @relation(fields: [carroceriaId], references: [id])
+  carroceria     tc_carroceria       @relation(fields: [carroceriaId], references: [id])
   carroceriaId   String           @unique
-  veiculo        Veiculo          @relation(fields: [veiculoId], references: [id])
+  veiculo        tc_veiculo          @relation(fields: [veiculoId], references: [id])
   veiculoId      String           @unique
-  Procura_Fretes Procura_Fretes[]
+  Procura_Fretes tb_procura_fretes[]
 }
 
-model Especie {
-  id      String  @id @default(uuid())
-  especie String  @unique
-  Fretes  Frete[]
-}
-
-model Frete {
+model tb_frete {
   id                       String             @id @default(uuid())
   cidade_origem            String
   cidade_destino           String
@@ -88,31 +68,31 @@ model Frete {
   lona                     Boolean?
   pedagio                  Boolean?
   rastreamento             Boolean?
-  empresa                  Empresa            @relation(fields: [empresaId], references: [cnpj])
+  empresa                  tb_empresa            @relation(fields: [empresaId], references: [cnpj])
   empresaId                Int
-  especie                  Especie            @relation(fields: [especieId], references: [id])
+  especie                  tc_especie            @relation(fields: [especieId], references: [id])
   especieId                String
-  Veiculo_Frete            Veiculo_Frete[]
+  Veiculo_Frete            tb_veiculo_frete[]
   Carroceria_Frete         Carroceria_Frete[]
 }
 
-model Veiculo_Frete {
+model tb_veiculo_frete {
   id        String  @id @default(uuid())
-  veiculo   Veiculo @relation(fields: [veiculoId], references: [id])
+  veiculo   tc_veiculo @relation(fields: [veiculoId], references: [id])
   veiculoId String
-  frete     Frete   @relation(fields: [freteId], references: [id])
+  frete     tb_frete   @relation(fields: [freteId], references: [id])
   freteId   String
 }
 
 model Carroceria_Frete {
   id           String     @id @default(uuid())
-  carroceria   Carroceria @relation(fields: [carroceriaId], references: [id])
+  carroceria   tc_carroceria @relation(fields: [carroceriaId], references: [id])
   carroceriaId String
-  frete        Frete      @relation(fields: [freteId], references: [id])
+  frete        tb_frete      @relation(fields: [freteId], references: [id])
   freteId      String
 }
 
-model Procura_Fretes {
+model tb_procura_fretes {
   id             String       @id @default(uuid())
   cidade_origem  String
   cidade_destino String?
@@ -120,5 +100,25 @@ model Procura_Fretes {
   estado_destino String?
   data_inicio    DateTime
   cpf            Int
-  caminhoneiro   Caminhoneiro @relation(fields: [cpf], references: [cpf])
+  caminhoneiro   tb_caminhoneiro @relation(fields: [cpf], references: [cpf])
+}
+
+model tc_especie {
+  id      String  @id @default(uuid())
+  especie String  @unique
+  Fretes  tb_frete[]
+}
+
+model tc_veiculo {
+  id            String          @id @default(uuid())
+  veiculo       String          @unique
+  Caminhoneiro  tb_caminhoneiro[]
+  Veiculo_Frete tb_veiculo_frete[]
+}
+
+model tc_carroceria {
+  id               String             @id @default(uuid())
+  carroceria       String             @unique
+  Caminhoneiro     tb_caminhoneiro[]
+  Carroceria_Frete Carroceria_Frete[]
 }

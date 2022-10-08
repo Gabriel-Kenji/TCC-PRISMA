@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `Empresa` (
+CREATE TABLE `tb_empresa` (
     `cnpj` INTEGER NOT NULL,
     `nome` VARCHAR(191) NOT NULL,
     `descricao` VARCHAR(191) NULL,
@@ -7,12 +7,12 @@ CREATE TABLE `Empresa` (
     `senha` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Empresa_email_key`(`email`),
+    UNIQUE INDEX `tb_empresa_email_key`(`email`),
     PRIMARY KEY (`cnpj`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Contatos_empresa` (
+CREATE TABLE `tb_contatos_empresa` (
     `id` VARCHAR(191) NOT NULL,
     `telefone` INTEGER NOT NULL,
     `celular` INTEGER NULL,
@@ -22,30 +22,12 @@ CREATE TABLE `Contatos_empresa` (
     `telegram` VARCHAR(191) NULL,
     `empresaId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Contatos_empresa_empresaId_key`(`empresaId`),
+    UNIQUE INDEX `tb_contatos_empresa_empresaId_key`(`empresaId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Veiculo` (
-    `id` VARCHAR(191) NOT NULL,
-    `veiculo` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `Veiculo_veiculo_key`(`veiculo`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Carroceria` (
-    `id` VARCHAR(191) NOT NULL,
-    `carroceria` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `Carroceria_carroceria_key`(`carroceria`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Caminhoneiro` (
+CREATE TABLE `tb_caminhoneiro` (
     `cpf` INTEGER NOT NULL,
     `nome` VARCHAR(191) NOT NULL,
     `senha` VARCHAR(191) NOT NULL,
@@ -55,23 +37,14 @@ CREATE TABLE `Caminhoneiro` (
     `carroceriaId` VARCHAR(191) NOT NULL,
     `veiculoId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Caminhoneiro_email_key`(`email`),
-    UNIQUE INDEX `Caminhoneiro_carroceriaId_key`(`carroceriaId`),
-    UNIQUE INDEX `Caminhoneiro_veiculoId_key`(`veiculoId`),
+    UNIQUE INDEX `tb_caminhoneiro_email_key`(`email`),
+    UNIQUE INDEX `tb_caminhoneiro_carroceriaId_key`(`carroceriaId`),
+    UNIQUE INDEX `tb_caminhoneiro_veiculoId_key`(`veiculoId`),
     PRIMARY KEY (`cpf`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Especie` (
-    `id` VARCHAR(191) NOT NULL,
-    `especie` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `Especie_especie_key`(`especie`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Frete` (
+CREATE TABLE `tb_frete` (
     `id` VARCHAR(191) NOT NULL,
     `cidade_origem` VARCHAR(191) NOT NULL,
     `cidade_destino` VARCHAR(191) NOT NULL,
@@ -99,7 +72,7 @@ CREATE TABLE `Frete` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Veiculo_Frete` (
+CREATE TABLE `tb_veiculo_frete` (
     `id` VARCHAR(191) NOT NULL,
     `veiculoId` VARCHAR(191) NOT NULL,
     `freteId` VARCHAR(191) NOT NULL,
@@ -117,7 +90,7 @@ CREATE TABLE `Carroceria_Frete` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Procura_Fretes` (
+CREATE TABLE `tb_procura_fretes` (
     `id` VARCHAR(191) NOT NULL,
     `cidade_origem` VARCHAR(191) NOT NULL,
     `cidade_destino` VARCHAR(191) NULL,
@@ -129,32 +102,59 @@ CREATE TABLE `Procura_Fretes` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `Contatos_empresa` ADD CONSTRAINT `Contatos_empresa_empresaId_fkey` FOREIGN KEY (`empresaId`) REFERENCES `Empresa`(`cnpj`) ON DELETE CASCADE ON UPDATE CASCADE;
+-- CreateTable
+CREATE TABLE `tc_especie` (
+    `id` VARCHAR(191) NOT NULL,
+    `especie` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `tc_especie_especie_key`(`especie`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `tc_veiculo` (
+    `id` VARCHAR(191) NOT NULL,
+    `veiculo` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `tc_veiculo_veiculo_key`(`veiculo`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `tc_carroceria` (
+    `id` VARCHAR(191) NOT NULL,
+    `carroceria` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `tc_carroceria_carroceria_key`(`carroceria`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Caminhoneiro` ADD CONSTRAINT `Caminhoneiro_carroceriaId_fkey` FOREIGN KEY (`carroceriaId`) REFERENCES `Carroceria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_contatos_empresa` ADD CONSTRAINT `tb_contatos_empresa_empresaId_fkey` FOREIGN KEY (`empresaId`) REFERENCES `tb_empresa`(`cnpj`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Caminhoneiro` ADD CONSTRAINT `Caminhoneiro_veiculoId_fkey` FOREIGN KEY (`veiculoId`) REFERENCES `Veiculo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_caminhoneiro` ADD CONSTRAINT `tb_caminhoneiro_carroceriaId_fkey` FOREIGN KEY (`carroceriaId`) REFERENCES `tc_carroceria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Frete` ADD CONSTRAINT `Frete_empresaId_fkey` FOREIGN KEY (`empresaId`) REFERENCES `Empresa`(`cnpj`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_caminhoneiro` ADD CONSTRAINT `tb_caminhoneiro_veiculoId_fkey` FOREIGN KEY (`veiculoId`) REFERENCES `tc_veiculo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Frete` ADD CONSTRAINT `Frete_especieId_fkey` FOREIGN KEY (`especieId`) REFERENCES `Especie`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_frete` ADD CONSTRAINT `tb_frete_empresaId_fkey` FOREIGN KEY (`empresaId`) REFERENCES `tb_empresa`(`cnpj`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Veiculo_Frete` ADD CONSTRAINT `Veiculo_Frete_veiculoId_fkey` FOREIGN KEY (`veiculoId`) REFERENCES `Veiculo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_frete` ADD CONSTRAINT `tb_frete_especieId_fkey` FOREIGN KEY (`especieId`) REFERENCES `tc_especie`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Veiculo_Frete` ADD CONSTRAINT `Veiculo_Frete_freteId_fkey` FOREIGN KEY (`freteId`) REFERENCES `Frete`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_veiculo_frete` ADD CONSTRAINT `tb_veiculo_frete_veiculoId_fkey` FOREIGN KEY (`veiculoId`) REFERENCES `tc_veiculo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Carroceria_Frete` ADD CONSTRAINT `Carroceria_Frete_carroceriaId_fkey` FOREIGN KEY (`carroceriaId`) REFERENCES `Carroceria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tb_veiculo_frete` ADD CONSTRAINT `tb_veiculo_frete_freteId_fkey` FOREIGN KEY (`freteId`) REFERENCES `tb_frete`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Carroceria_Frete` ADD CONSTRAINT `Carroceria_Frete_freteId_fkey` FOREIGN KEY (`freteId`) REFERENCES `Frete`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Carroceria_Frete` ADD CONSTRAINT `Carroceria_Frete_carroceriaId_fkey` FOREIGN KEY (`carroceriaId`) REFERENCES `tc_carroceria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Procura_Fretes` ADD CONSTRAINT `Procura_Fretes_cpf_fkey` FOREIGN KEY (`cpf`) REFERENCES `Caminhoneiro`(`cpf`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Carroceria_Frete` ADD CONSTRAINT `Carroceria_Frete_freteId_fkey` FOREIGN KEY (`freteId`) REFERENCES `tb_frete`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `tb_procura_fretes` ADD CONSTRAINT `tb_procura_fretes_cpf_fkey` FOREIGN KEY (`cpf`) REFERENCES `tb_caminhoneiro`(`cpf`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -2,7 +2,7 @@ const PrismaClient = require("@prisma/client");
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
 
-async function createEspecie(req, res) {
+/*async function createEspecie(req, res) {
   try {
     const { especie } = req.body;
 
@@ -22,11 +22,11 @@ async function createEspecie(req, res) {
   } catch (error) {
     return res.json(error);
   }
-}
+}*/
 
 async function findAllEspecie(req, res) {
   try {
-    const especies = await prisma.especie.findMany({});
+    const especies = await prisma.tc_especie.findMany({});
     return res.json(especies);
   } catch (error) {
     return res.json({ error });
@@ -36,7 +36,7 @@ async function findAllEspecie(req, res) {
 async function findEspecie(req, res) {
   try {
     const { especie } = req.params;
-    const especies = await prisma.especie.findUnique({
+    const especies = await prisma.tc_especie.findUnique({
       where: { especie },
     });
     if (!especies) {
@@ -50,7 +50,7 @@ async function findEspecie(req, res) {
   }
 }
 
-async function updateEspecie(req, res) {
+/*async function updateEspecie(req, res) {
   try {
     const especieAntiga = req.params.especie;
     const { especie } = req.body;
@@ -72,9 +72,9 @@ async function updateEspecie(req, res) {
   } catch (error) {
     return res.json({ error });
   }
-}
+}*/
 
-async function deleteEspecie(req, res) {
+/*async function deleteEspecie(req, res) {
   try {
     const { especie } = req.params;
 
@@ -91,10 +91,10 @@ async function deleteEspecie(req, res) {
   } catch (error) {
     return res.json({ error });
   }
-}
+}*/
 
-module.exports.createEspecie = createEspecie;
-module.exports.deleteEspecie = deleteEspecie;
+/*module.exports.createEspecie = createEspecie;
+module.exports.deleteEspecie = deleteEspecie;*/
 module.exports.findAllEspecie = findAllEspecie;
 module.exports.findEspecie = findEspecie;
-module.exports.updateEspecie = updateEspecie;
+//module.exports.updateEspecie = updateEspecie;

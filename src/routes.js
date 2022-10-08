@@ -38,21 +38,21 @@ routes.put("/empresas/contato/:cnpj", ContatoEmpresasController.updateContatoEmp
 
 // ROTAS CARROCERIA
 
-routes.post("/carrocerias", CarroceriaController.createCarroceria);
+//routes.post("/carrocerias", CarroceriaController.createCarroceria);
 routes.get("/carrocerias", CarroceriaController.findAllCarroceria);
 routes.get("/carrocerias/:carroceria", CarroceriaController.findCarroceria);
-routes.put("/carrocerias/:carroceria", CarroceriaController.updateCarroceria);
-routes.delete("/carrocerias/:carroceria", CarroceriaController.deleteCarroceria);
+/*routes.put("/carrocerias/:carroceria", CarroceriaController.updateCarroceria);
+routes.delete("/carrocerias/:carroceria", CarroceriaController.deleteCarroceria);*/
 
 // ROTAS VEICULOS
 
-routes.post("/veiculos", VeiculoController.createVeiculo);
+//routes.post("/veiculos", VeiculoController.createVeiculo);
 routes.get("/veiculos", VeiculoController.findAllVeiculo);
 routes.get("/veiculos/:veiculo", VeiculoController.findVeiculo);
-routes.put("/veiculos/:veiculo", VeiculoController.updateVeiculo);
+//routes.put("/veiculos/:veiculo", VeiculoController.updateVeiculo);
 routes.delete("/veiculos/:veiculo", VeiculoController.deleteVeiculo);
 
-// ROTAS VEICULOS
+// ROTAS Caminhneiro
 
 routes.post("/caminhoneiros", CaminhoneiroController.createCaminhoneiro);
 routes.get("/caminhoneiros", CaminhoneiroController.findAllCaminhoneiro);
@@ -63,11 +63,11 @@ routes.delete("/caminhoneiros/:cpf", CaminhoneiroController.deleteCaminhoneiro);
 
 // ROTAS ESPECIE
 
-routes.post("/especies", EspecieController.createEspecie);
+//routes.post("/especies", EspecieController.createEspecie);
 routes.get("/especies", EspecieController.findAllEspecie);
 routes.get("/especies/:especie", EspecieController.findEspecie);
-routes.put("/especies/:especie", EspecieController.updateEspecie);
-routes.delete("/especies/:especie", EspecieController.deleteEspecie);
+/*routes.put("/especies/:especie", EspecieController.updateEspecie);
+routes.delete("/especies/:especie", EspecieController.deleteEspecie);*/
 
 
 // ROTAS FRETE
@@ -78,14 +78,6 @@ routes.get("/fretes/:id", FretesController.findFrete);
 routes.put("/fretes/:id", FretesController.updateFrete);
 routes.delete("/fretes/:id", FretesController.deleteFrete);
 
-
-// ROTAS PROCURA FRETES
-
-routes.post("/fretes", FretesController.createFrete);
-routes.get("/fretes", FretesController.findAllFrete);
-routes.get("/fretes/:id", FretesController.findFrete);
-routes.put("/fretes/:id", FretesController.updateFrete);
-routes.delete("/fretes/:id", FretesController.deleteFrete);
 
 // ROTAS PROCURA FRETES
 

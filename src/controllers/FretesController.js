@@ -32,7 +32,7 @@ async function createFrete(req, res) {
     } = req.body;
 
     console.log("teste");
-    const fretes = await prisma.frete.create({
+    const fretes = await prisma.tb_frete.create({
       data: {
         cidade_destino,
         cidade_origem,
@@ -89,7 +89,7 @@ async function createFrete(req, res) {
 
 async function findAllFrete(req, res) {
   try {
-    const fretes = await prisma.frete.findMany({
+    const fretes = await prisma.tb_frete.findMany({
       include: {
         Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
         Carroceria_Frete: {
@@ -106,7 +106,7 @@ async function findAllFrete(req, res) {
 async function findFrete(req, res) {
   try {
     const { id } = req.params;
-    const frete = await prisma.frete.findUnique({
+    const frete = await prisma.tb_frete.findUnique({
       where: { id },
       include: {
         Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
@@ -152,14 +152,14 @@ async function updateFrete(req, res) {
       especieId,
     } = req.body;
 
-    let frete = await prisma.frete.findUnique({
+    let frete = await prisma.tb_frete.findUnique({
       where: { id },
     });
     if (!frete)
       return res.json({
         error: "Não foi possivel encontrar esse frete",
       });
-    frete = await prisma.frete.update({
+    frete = await prisma.tb_frete.update({
       where: { id },
       data: {
         cidade_origem,
@@ -199,7 +199,7 @@ async function deleteFrete(req, res) {
   try {
     const { id } = req.params;
 
-    let frete = await prisma.frete.findUnique({
+    let frete = await prisma.tb_frete.findUnique({
       where: { id },
     });
 
@@ -208,7 +208,7 @@ async function deleteFrete(req, res) {
         error: "Não foi possivel encontrar esse frete",
       });
 
-    await prisma.frete.delete({ where: { id } });
+    await prisma.tb_frete.delete({ where: { id } });
 
     return res.json({ message: "Frete deletado com sucesso" });
   } catch (error) {

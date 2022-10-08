@@ -16,7 +16,7 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
         veiculoId,
       } = req.body;
 
-      let caminhoneiro = await prisma.caminhoneiro.findUnique({
+      let caminhoneiro = await prisma.tb_caminhoneiro.findUnique({
         where: { cpf },
       });
 
@@ -24,12 +24,12 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
         return res.json({ error: "Cpf ja atribuido a um caminhoneiro" });
       }
 
-      caminhoneiro = await prisma.caminhoneiro.findUnique({ where: { email } });
+      caminhoneiro = await prisma.tb_caminhoneiro.findUnique({ where: { email } });
 
       if (caminhoneiro) {
         return res.json({ error: "Email ja atribuido a um caminhoneiro" });
       }
-      caminhoneiro = await prisma.caminhoneiro.create({
+      caminhoneiro = await prisma.tb_caminhoneiro.create({
         data: {
           cpf,
           nome,
@@ -53,7 +53,7 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
 
   async function findAllCaminhoneiro(req, res) {
     try {
-      const caminhoneiros = await prisma.caminhoneiro.findMany({
+      const caminhoneiros = await prisma.tb_caminhoneiro.findMany({
         include: {
           carroceria: true,
           veiculo: true,
@@ -68,7 +68,7 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
   async function findCaminhoneiro(req, res) {
     try {
       const { cpf } = req.params;
-      const caminhoneiros = await prisma.caminhoneiro.findUnique({
+      const caminhoneiros = await prisma.tb_caminhoneiro.findUnique({
         where: { cpf: Number(cpf) },
         include: {
           carroceria: true,
@@ -99,7 +99,7 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
         veiculoId,
       } = req.body;
 
-      let caminhoneiros = await prisma.caminhoneiro.findUnique({
+      let caminhoneiros = await prisma.tb_caminhoneiro.findUnique({
         where: { cpf: Number(cpf) },
       });
 
@@ -108,7 +108,7 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
           error: "Não foi possivel encontrar esse caminhoneiro",
         });
 
-      caminhoneiros = await prisma.caminhoneiro.update({
+      caminhoneiros = await prisma.tb_caminhoneiro.update({
         where: { cpf: Number(cpf) },
         data: {
           nome,
@@ -135,14 +135,14 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
     try {
       const { cpf } = req.params;
 
-      let caminhoneiros = await prisma.caminhoneiro.findUnique({
+      let caminhoneiros = await prisma.tb_caminhoneiro.findUnique({
         where: { cpf: Number(cpf) },
       });
 
       if (!caminhoneiros)
         return res.json({ error: "Não foi possivel encontrar esse caminhoneiro" });
 
-      await prisma.caminhoneiro.delete({ where: { cpf: Number(cpf) } });
+      await prisma.tb_caminhoneiro.delete({ where: { cpf: Number(cpf) } });
 
       return res.json({ message: "Caminhoneiro deletada com sucesso" });
     } catch (error) {
