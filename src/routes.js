@@ -49,6 +49,7 @@ routes.delete("/carrocerias/:carroceria", CarroceriaController.deleteCarroceria)
 //routes.post("/veiculos", VeiculoController.createVeiculo);
 routes.get("/veiculos", VeiculoController.findAllVeiculo);
 routes.get("/veiculos/:veiculo", VeiculoController.findVeiculo);
+//URL http://localhost:3030/veiculos/Carreta - O parametro que é passado é o VEICULO!
 //routes.put("/veiculos/:veiculo", VeiculoController.updateVeiculo);
 routes.delete("/veiculos/:veiculo", VeiculoController.deleteVeiculo);
 
