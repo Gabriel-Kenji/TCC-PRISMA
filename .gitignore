@@ -1,2 +1,8 @@
 node_modules
 package-lock.json
+.env
+prisma/migrations/migration_lock.toml
+prisma/migrations/20221012200749_teste/migration.sql
+prisma/migrations/20221008193920_/migration.sql
+prisma/migrations/migration_lock.toml
+.env
