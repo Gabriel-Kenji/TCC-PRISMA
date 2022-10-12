@@ -1,0 +1,87 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TCC FRETES",
+        "description": "",
+        "contact": {
+          "email": "support@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/empresas":{
+            "post":{
+                "summary": "Cadastro de Empresa",
+                "description": "Essa rota é responsavel pelo cadastro de novas empresas",
+                "tags": ["Empresas"],
+                "requestBody":{
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Empresa"
+                            },
+                            "examples":{
+                                "Empresa Teste":{
+                                    "value":{
+                                        "cnpj": 12345678900,
+                                        "nome": "Empresa de teste",
+                                        "descricao": "Somos uma empresa de teste",
+                                        "imagem_perfil": "https://teste.com/imagem_teste.jpg",
+                                        "senha": "teste123",
+                                        "email": "teste@teste.com",
+                                        "telefone": 11123456789
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Empresa"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Empresa já existe"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Empresa":{
+                "type": "object",
+                "properties": {
+                    "cnpj":{
+                        "type": "integer"
+                    },
+                    "nome":{
+                        "type": "string"
+                    },
+                    "descricao":{
+                        "type": "string"
+                    },
+                    "imagem_perfil":{
+                        "type": "string"
+                    },
+                    "senha":{
+                        "type": "string"
+                    },
+                    "email":{
+                        "type": "string"
+                    },
+                    "telefone":{
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}
