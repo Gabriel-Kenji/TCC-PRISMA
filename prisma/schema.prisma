@@ -11,7 +11,7 @@ datasource db {
 }
 
 model tb_empresa {
-  cnpj             Int                  @id
+  cnpj             String                  @id
   nome             String
   descricao        String?
   imagem_perfil    String?
@@ -23,22 +23,22 @@ model tb_empresa {
 
 model tb_contatos_empresa {
   id        String     @id @default(uuid())
-  telefone  Int
-  celular   Int?
+  telefone  String
+  celular   String?
   facebook  String?
   whatsapp  String?
   linkedin  String?
   telegram  String?
   empresa   tb_empresa @relation(fields: [empresaId], references: [cnpj], onDelete: Cascade)
-  empresaId Int        @unique
+  empresaId String        @unique
 }
 
 model tb_caminhoneiro {
-  cpf            Int                 @id
+  cpf            String                 @id
   nome           String
   senha          String
   email          String              @unique
-  celular        Int?
+  celular        String?
   notificacao    Boolean
   carroceria     tc_carroceria       @relation(fields: [carroceriaId], references: [id])
   carroceriaId   Int              @unique
@@ -69,7 +69,7 @@ model tb_frete {
   pedagio                  Boolean?
   rastreamento             Boolean?
   empresa                  tb_empresa         @relation(fields: [empresaId], references: [cnpj])
-  empresaId                Int
+  empresaId                String
   especie                  tc_especie         @relation(fields: [especieId], references: [id])
   especieId                String
   Veiculo_Frete            tb_veiculo_frete[]
@@ -99,7 +99,7 @@ model tb_procura_fretes {
   estado_origem  String
   estado_destino String?
   data_inicio    DateTime
-  cpf            Int
+  cpf            String
   caminhoneiro   tb_caminhoneiro @relation(fields: [cpf], references: [cpf])
 }
 

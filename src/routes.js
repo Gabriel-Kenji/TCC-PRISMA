@@ -1,5 +1,8 @@
 const Router = require('express');
 
+//middleware
+const  middlewareLoginEmpresa = require("./middleware/loginEmpresa")
+//controllers
 const EmpresasController = require( "./controllers/EmpresasController");
 const ContatoEmpresasController = require( "./controllers/ContatoEmpresasController");
 const CarroceriaController = require( "./controllers/CarroceriaController");
@@ -8,6 +11,8 @@ const CaminhoneiroController = require( "./controllers/CaminhoneiroController");
 const EspecieController = require( "./controllers/EspecieController");
 const FretesController = require( "./controllers/FretesController");
 const ProcuraFretesController = require("./controllers/ProcuraFretesController")
+const LoginEmpresa = require("./controllers/LoginEmpresaController")
+
 
 // import all controllers
 // import SessionController from './app/controllers/SessionController';
@@ -26,14 +31,14 @@ const routes = new Router.Router();
 routes.post("/empresas", EmpresasController.createEmpresas);
 routes.get("/empresas", EmpresasController.findAllEmpresas);
 routes.get("/empresas/:cnpj", EmpresasController.findEmpresa);
-routes.put("/empresas/:cnpj", EmpresasController.updateEmpresa);
-routes.delete("/empresas/:cnpj", EmpresasController.deleteEmpresa);
+routes.put("/empresas/:cnpj", middlewareLoginEmpresa.LoginEmpresa, EmpresasController.updateEmpresa);
+routes.delete("/empresas/:cnpj", middlewareLoginEmpresa.LoginEmpresa, EmpresasController.deleteEmpresa);
 
 
 // ROTAS CONTATO EMPRESAS
 
 routes.get("/empresas/contato/:cnpj", ContatoEmpresasController.findContatoEmpresa);
-routes.put("/empresas/contato/:cnpj", ContatoEmpresasController.updateContatoEmpresa);
+routes.put("/empresas/contato/:cnpj", middlewareLoginEmpresa.LoginEmpresa, ContatoEmpresasController.updateContatoEmpresa);
 
 
 // ROTAS CARROCERIA
@@ -73,12 +78,12 @@ routes.delete("/especies/:especie", EspecieController.deleteEspecie);*/
 
 // ROTAS FRETE
 
-routes.post("/fretes", FretesController.createFrete);
+routes.post("/fretes", middlewareLoginEmpresa.LoginEmpresa, FretesController.createFrete);
 routes.get("/fretes", FretesController.findAllFrete);
 routes.get("/fretes/:id", FretesController.findFrete);
-routes.put("/fretes/:id", FretesController.updateFrete);
-routes.delete("/fretes/:id", FretesController.deleteFrete);
-
+routes.put("/fretes/:id", middlewareLoginEmpresa.LoginEmpresa, FretesController.updateFrete);
+routes.delete("/fretes/:id", middlewareLoginEmpresa.LoginEmpresa, FretesController.deleteFrete);
+ 
 
 // ROTAS PROCURA FRETES
 
@@ -88,5 +93,8 @@ routes.get("/procura_fretes/:id", ProcuraFretesController.findProcuraFretes);
 routes.put("/procura_fretes/:id", ProcuraFretesController.updateProcuraFrete);
 routes.delete("/procura_fretes/:id", ProcuraFretesController.deleteProcuraFrete);
 
+
+// ROTAS LOGIN EMPRESA
+routes.post("/login_empresa", LoginEmpresa.LoginEmpresa);
 
 module.exports = routes;
