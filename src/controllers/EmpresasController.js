@@ -1,15 +1,34 @@
 const PrismaClient = require('@prisma/client');
 const bcrypt = require('bcrypt');
+const { validationResult } = require('express-validator');
 
 const prisma = new PrismaClient.PrismaClient({ log: ['query', 'info'] });
 
 
 async function createEmpresas(req, res) {
   try {
-    const { cnpj, nome, email, descricao, imagem_perfil, senha, telefone, celular, facebook, whatsapp, linkedin, telegram } =
-      req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const {
+      cnpj,
+      nome,
+      email,
+      descricao,
+      imagem_perfil,
+      senha, 
+      telefone, 
+      celular, 
+      facebook, 
+      whatsapp, 
+      linkedin, 
+      telegram 
+    } = req.body;
 
-    let empresa = await prisma.tb_empresa.findUnique({ where: { cnpj } });
+
+
+    let empresa = await prisma.tb_empresa.findUnique({ where: { cnpj: cnpj.replace(/[^\d]+/g, '') } });
 
     if (empresa) {
       return res.status(400).json({ error: "Cnpj ja atribuido a uma empresa" });
@@ -25,7 +44,7 @@ async function createEmpresas(req, res) {
       if (errBcrypt) { return res.status(500).json({ error: errBcrypt }); }
       empresa = await prisma.tb_empresa.create({
         data: {
-          cnpj,
+          cnpj: cnpj.replace(/[^\d]+/g, ''),
           nome,
           email,
           descricao,

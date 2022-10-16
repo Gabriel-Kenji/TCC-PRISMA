@@ -2,6 +2,12 @@ const Router = require('express');
 
 //middleware
 const  middlewareLoginEmpresa = require("./middleware/loginEmpresa")
+
+//validation
+const ValidationLogin = require("./validation/login")
+const ValidationEmpresa = require("./validation/empresa")
+const ValidationCaminhoneiro = require("./validation/caminhoneiro")
+
 //controllers
 const EmpresasController = require( "./controllers/EmpresasController");
 const ContatoEmpresasController = require( "./controllers/ContatoEmpresasController");
@@ -28,7 +34,7 @@ const routes = new Router.Router();
 
 // ROTAS EMPRESAS
 
-routes.post("/empresas", EmpresasController.createEmpresas);
+routes.post("/empresas", ValidationEmpresa.validatiorEmpresa, EmpresasController.createEmpresas);
 routes.get("/empresas", EmpresasController.findAllEmpresas);
 routes.get("/empresas/:cnpj", EmpresasController.findEmpresa);
 routes.put("/empresas/:cnpj", middlewareLoginEmpresa.LoginEmpresa, EmpresasController.updateEmpresa);
@@ -60,7 +66,7 @@ routes.delete("/veiculos/:veiculo", VeiculoController.deleteVeiculo);
 
 // ROTAS Caminhneiro
 
-routes.post("/caminhoneiros", CaminhoneiroController.createCaminhoneiro);
+routes.post("/caminhoneiros",ValidationCaminhoneiro.validationCaminhoneiro, CaminhoneiroController.createCaminhoneiro);
 routes.get("/caminhoneiros", CaminhoneiroController.findAllCaminhoneiro);
 routes.get("/caminhoneiros/:cpf", CaminhoneiroController.findCaminhoneiro);
 routes.put("/caminhoneiros/:cpf", CaminhoneiroController.updateCaminhoneiro);
@@ -95,6 +101,6 @@ routes.delete("/procura_fretes/:id", ProcuraFretesController.deleteProcuraFrete)
 
 
 // ROTAS LOGIN EMPRESA
-routes.post("/login_empresa", LoginEmpresa.LoginEmpresa);
+routes.post("/login_empresa", ValidationLogin.validationLogin, LoginEmpresa.LoginEmpresa);
 
 module.exports = routes;

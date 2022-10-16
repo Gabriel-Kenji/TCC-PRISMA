@@ -41,9 +41,9 @@ model tb_caminhoneiro {
   celular        String?
   notificacao    Boolean
   carroceria     tc_carroceria       @relation(fields: [carroceriaId], references: [id])
-  carroceriaId   Int              @unique
+  carroceriaId   Int             
   veiculo        tc_veiculo          @relation(fields: [veiculoId], references: [id])
-  veiculoId      Int              @unique
+  veiculoId      Int              
   Procura_Fretes tb_procura_fretes[]
 }
 

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function login(req, res, next){
+function login (req, res, next){
     try {
         const decode = jwt.verify(req.body.token, process.env.JWT_KEY);
         req.usuario = decode;
