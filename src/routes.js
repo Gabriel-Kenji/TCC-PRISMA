@@ -18,6 +18,7 @@ const EspecieController = require( "./controllers/EspecieController");
 const FretesController = require( "./controllers/FretesController");
 const ProcuraFretesController = require("./controllers/ProcuraFretesController")
 const LoginEmpresa = require("./controllers/LoginEmpresaController")
+const LoginCaminhoneiro = require("./controllers/LoginCaminhoneiroController")
 
 
 // import all controllers
@@ -101,6 +102,8 @@ routes.delete("/procura_fretes/:id", ProcuraFretesController.deleteProcuraFrete)
 
 
 // ROTAS LOGIN EMPRESA
-routes.post("/login_empresa", ValidationLogin.validationLogin, LoginEmpresa.LoginEmpresa);
+routes.post("/login/empresa", ValidationLogin.validationLogin, LoginEmpresa.LoginEmpresa);
+
+routes.post("/login/caminhoneiro", ValidationLogin.validationLogin, LoginCaminhoneiro.LoginCaminhoneiro);
 
 module.exports = routes;

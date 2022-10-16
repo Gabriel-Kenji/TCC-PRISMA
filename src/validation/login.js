@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 
 module.exports.validationLogin = [
-    body("email").isEmail().optional(true),
-    body("senha").isLength({min: 8})
+    body("email").isEmail().withMessage('E-mail invalido'),
+    body("senha").isLength({min: 8}).withMessage('Senha invalida')
 ]
