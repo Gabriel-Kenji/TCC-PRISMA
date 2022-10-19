@@ -20,11 +20,11 @@ async function whatsTwilio(data, host) {
           {data_postagem: data.data_inicio},
         ],
       },
-      take: 2
+      take: 10
     })
     let text = ""
     for (const veiculosId of compativel) {
-      text += host + '/fretes/' + veiculosId.id + "\n\n"
+      text += "🚚Origem: 📦Destino: " + host + '/fretes/' + veiculosId.id + "\n\n "
       
     }
     
@@ -67,7 +67,7 @@ async function smsTwilio(data, host) {
          messagingServiceSid: 'MG7cdc4e91ff1c6ad657865234b461e680',      
          to: '+5511950538816' 
        }) 
-      .then(message => console.log(message.sid)) 
+      .then(message => console.log(message)) 
       .catch(err => console.log(err));
   } catch (error) {
   }
