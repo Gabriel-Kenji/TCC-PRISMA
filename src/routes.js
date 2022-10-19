@@ -85,7 +85,7 @@ routes.delete("/especies/:especie", EspecieController.deleteEspecie);*/
 
 // ROTAS FRETE
 
-routes.post("/fretes", middlewareLoginEmpresa.LoginEmpresa, FretesController.createFrete);
+routes.post("/fretes",  FretesController.createFrete);
 routes.get("/fretes", FretesController.findAllFrete);
 routes.get("/fretes/:id", FretesController.findFrete);
 routes.put("/fretes/:id", middlewareLoginEmpresa.LoginEmpresa, FretesController.updateFrete);

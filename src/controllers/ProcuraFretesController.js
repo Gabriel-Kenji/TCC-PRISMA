@@ -33,7 +33,7 @@ async function createProcuraFrete(req, res) {
         },
       },
     });
-    twilio.whatsTwilio(Procurafretes);
+    twilio.smsTwilio(Procurafretes, req.get('host'));
     return res.json({ Procurafretes });
   } catch (error) {
     return res.json(error);

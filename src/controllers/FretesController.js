@@ -53,14 +53,14 @@ async function createFrete(req, res) {
         agenciamento,
         lona,
         pedagio,
-        rastreamento,
+        rastreamento
       },
     });
 
     fretes.veiculosFrete = [];
 
     for (const veiculosId of veiculoId) {
-      let veiculos = await prisma.veiculo_Frete.create({
+      let veiculos = await prisma.tb_veiculo_frete.create({
         data: { veiculoId: veiculosId, freteId: fretes.id },
         include: {
           veiculo: true,
@@ -83,6 +83,7 @@ async function createFrete(req, res) {
 
     return res.json({ fretes });
   } catch (error) {
+    console.log(error)
     return res.json(error);
   }
 }
