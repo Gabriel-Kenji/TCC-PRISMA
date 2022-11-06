@@ -1,5 +1,7 @@
 const Router = require('express');
 
+
+
 //middleware
 const  middlewareLoginEmpresa = require("./middleware/loginEmpresa")
 
@@ -106,4 +108,4 @@ routes.post("/login/empresa", ValidationLogin.validationLogin, LoginEmpresa.Logi
 
 routes.post("/login/caminhoneiro", ValidationLogin.validationLogin, LoginCaminhoneiro.LoginCaminhoneiro);
 
-module.exports = routes;
+module.exports = routes; 

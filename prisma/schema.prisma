@@ -11,7 +11,7 @@ datasource db {
 }
 
 model tb_empresa {
-  cnpj             String                  @id
+  cnpj             String               @id
   nome             String
   descricao        String?
   imagem_perfil    String?
@@ -30,20 +30,20 @@ model tb_contatos_empresa {
   linkedin  String?
   telegram  String?
   empresa   tb_empresa @relation(fields: [empresaId], references: [cnpj], onDelete: Cascade)
-  empresaId String        @unique
+  empresaId String     @unique
 }
 
 model tb_caminhoneiro {
-  cpf            String                 @id
+  cpf            String              @id
   nome           String
   senha          String
   email          String              @unique
   celular        String?
   notificacao    Boolean
   carroceria     tc_carroceria       @relation(fields: [carroceriaId], references: [id])
-  carroceriaId   Int             
+  carroceriaId   Int
   veiculo        tc_veiculo          @relation(fields: [veiculoId], references: [id])
-  veiculoId      Int              
+  veiculoId      Int
   Procura_Fretes tb_procura_fretes[]
 }
 
@@ -56,7 +56,7 @@ model tb_frete {
   descricao                String?
   forma_pagamento          String?
   produto                  String?
-  preco                    String
+  preco                    String?             @default("A COMBINAR")
   peso                     String?
   porcentagem_adiantamento String?
   tipo_carga               String?
@@ -71,7 +71,7 @@ model tb_frete {
   empresa                  tb_empresa         @relation(fields: [empresaId], references: [cnpj])
   empresaId                String
   especie                  tc_especie         @relation(fields: [especieId], references: [id])
-  especieId                String
+  especieId                Int
   Veiculo_Frete            tb_veiculo_frete[]
   Carroceria_Frete         Carroceria_Frete[]
 }
@@ -100,11 +100,17 @@ model tb_procura_fretes {
   estado_destino String?
   data_inicio    DateTime
   cpf            String
+  ativo          Boolean         @default(false)
+  agenciamento   Boolean?
+  lona           Boolean?
+  pedagio        Boolean?
+  rastreamento   Boolean?
+  especieId      Int?
   caminhoneiro   tb_caminhoneiro @relation(fields: [cpf], references: [cpf])
 }
 
 model tc_especie {
-  id      String     @id @default(uuid())
+  id      Int        @id @default(autoincrement())
   especie String     @unique
   Fretes  tb_frete[]
 }

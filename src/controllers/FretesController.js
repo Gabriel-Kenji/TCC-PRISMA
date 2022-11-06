@@ -1,6 +1,7 @@
 const PrismaClient = require("@prisma/client");
-
+const axios = require('axios');
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
+const ProcuraCaminhoneiros = require('./ProcuraCaminhoneiros.js')
 
 let datetime = require("node-datetime");
 
@@ -30,8 +31,6 @@ async function createFrete(req, res) {
       veiculoId,
       carroceriaId,
     } = req.body;
-
-    console.log("teste");
     const fretes = await prisma.tb_frete.create({
       data: {
         cidade_destino,
@@ -80,7 +79,8 @@ async function createFrete(req, res) {
       });
       fretes.carroceriaFrete.push(carroceria);
     }
-
+    
+    ProcuraCaminhoneiros.whatsTwilio(fretes, "http://" + req.get('host'), carroceriaId, veiculoId)
     return res.json({ fretes });
   } catch (error) {
     console.log(error)
@@ -90,6 +90,7 @@ async function createFrete(req, res) {
 
 async function findAllFrete(req, res) {
   try {
+    const count = await prisma.tb_frete.count()
     const fretes = await prisma.tb_frete.findMany({
       include: {
         Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
@@ -98,7 +99,7 @@ async function findAllFrete(req, res) {
         },
       },
     });
-    return res.json(fretes);
+    return res.json({count: count, fretes: fretes});
   } catch (error) {
     return res.json({ error });
   }

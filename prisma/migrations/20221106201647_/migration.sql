@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `tb_frete` MODIFY `preco` VARCHAR(191) NOT NULL DEFAULT 'A COMBINAR';

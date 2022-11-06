@@ -23,6 +23,9 @@ function Especie(){
         },
         {
             "especie": "Caixas"
+        },
+        {
+            "especie": "Sacos"
         }
     ]
 

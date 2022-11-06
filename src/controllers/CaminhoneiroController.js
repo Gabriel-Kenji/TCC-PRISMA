@@ -28,9 +28,8 @@ const prisma = new PrismaClient.PrismaClient({log: ['query', 'info']});
       if(not == 1 )
          not = true 
 
-
       let caminhoneiro = await prisma.tb_caminhoneiro.findUnique({
-        where: { cpf },
+        where: { cpf: cpf.replace(/[^\d]+/g , '') },
       });
 
       if (caminhoneiro) {
