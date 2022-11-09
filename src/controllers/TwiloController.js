@@ -82,14 +82,14 @@ async function whatsTwilio(data, host) {
               text += "\n🚚Origem: " + cidade_origem + "/" + uf_origem + "\n📦Destino: " + cidade_destino + "/" + uf_destino + " \n💲Valor: " + fretes.preco
               console.log(cont+ " " + text)
               
-              // twilio.messages
-              // .create({
-              //   body: text,
-              //   from: '+19045606205',
-              //   to: '+55' + data.caminhoneiro.celular
-              // })
-              // .then(message => console.log(message))
-              // .catch(err => console.log(err));
+              twilio.messages
+              .create({
+                body: text,
+                from: '+19045606205',
+                to: '+55' + data.caminhoneiro.celular
+              })
+              .then(message => console.log(message))
+              .catch(err => console.log(err));
             }
             
           }
@@ -134,14 +134,7 @@ async function smsTwilio(data, host) {
   }
 }
 
-http.createServer(function (req, res) {
-  var hostname = req.headers.host; // hostname = 'localhost:8080'
-  var pathname = url.parse(req.url).pathname; // pathname = '/MyApp'
-  console.log('http://' + hostname + pathname);
 
-  res.writeHead(200);
-  res.end();
-}).listen(8080);
 
 module.exports.whatsTwilio = whatsTwilio;
 module.exports.smsTwilio = smsTwilio;

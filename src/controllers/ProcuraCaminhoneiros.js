@@ -79,14 +79,14 @@ async function whatsTwilio(data, host, carroceriaId, veiculoId) {
           let uf_destino = await getCidadeUF.getUF(data.estado_destino)
           const text = "\n🚚Origem: " + cidade_origem + "/" + uf_origem + "\n📦Destino: " + cidade_destino + "/" + uf_destino + " \n💸Valor: " + data.preco
           console.log("\n"+ user.caminhoneiro.celular + text)
-          // twilio.messages
-          //     .create({
-          //       body: text,
-          //       from: '+19045606205',
-          //       to: '+55' +  user.caminhoneiro.celular
-          //     })
-          //     .then(message => console.log(message))
-          //     .catch(err => console.log(err));
+          twilio.messages
+              .create({
+                body: text,
+                from: '+19045606205',
+                to: '+55' +  user.caminhoneiro.celular
+              })
+              .then(message => console.log(message))
+              .catch(err => console.log(err));
 
         }
       }
