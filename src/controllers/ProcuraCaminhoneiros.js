@@ -1,12 +1,13 @@
 const PrismaClient = require("@prisma/client");
 const http = require('http');
 const getCidadeUF = require('./getCidadeUF.js')
+const twilio = require("./TwiloController.js")
 
 
 require('dotenv/config');
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
-const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+// const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 let datetime = require("node-datetime");
 
@@ -79,15 +80,7 @@ async function whatsTwilio(data, host, carroceriaId, veiculoId) {
           let uf_destino = await getCidadeUF.getUF(data.estado_destino)
           const text = "\n🚚Origem: " + cidade_origem + "/" + uf_origem + "\n📦Destino: " + cidade_destino + "/" + uf_destino + " \n💸Valor: " + data.preco
           console.log("\n"+ user.caminhoneiro.celular + text)
-          twilio.messages
-              .create({
-                body: text,
-                from: '+19045606205',
-                to: '+55' +  user.caminhoneiro.celular
-              })
-              .then(message => console.log(message))
-              .catch(err => console.log(err));
-
+          twilio.smsTwilio(text, user.caminhoneiro.celular)
         }
       }
     }

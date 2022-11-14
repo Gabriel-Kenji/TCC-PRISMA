@@ -1,6 +1,3 @@
-const twilio = require("./TwiloController.js")
-
-
 const PrismaClient = require("@prisma/client");
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
@@ -50,7 +47,6 @@ async function createProcuraFrete(req, res) {
           },
         },
       });
-      twilio.whatsTwilio(Procurafretes, "http://" + req.get('host'));
       return res.json({ Procurafretes });
     }else{
       
@@ -79,7 +75,6 @@ async function createProcuraFrete(req, res) {
           },
         }
       })
-      twilio.whatsTwilio(updateProcurafretes, "https://" + req.get('host'));
       return res.json({ updateProcurafretes });
     }
   } catch (error) {
