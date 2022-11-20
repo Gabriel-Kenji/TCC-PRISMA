@@ -79,7 +79,7 @@ async function createFrete(req, res) {
       });
       fretes.carroceriaFrete.push(carroceria);
     }
-    
+
     ProcuraCaminhoneiros.whatsTwilio(fretes, "http://" + req.get('host'), carroceriaId, veiculoId)
     return res.json({ fretes });
   } catch (error) {
@@ -99,7 +99,80 @@ async function findAllFrete(req, res) {
         },
       },
     });
-    return res.json({count: count, fretes: fretes});
+    return res.json({ count: count, fretes: fretes });
+  } catch (error) {
+    return res.json({ error });
+  }
+}
+
+async function findFilterFrete(req, res) {
+  try {
+    const {
+      cidade_origem,
+      cidade_destino,
+      estado_origem,
+      estado_destino,
+      descricao,
+      forma_pagamento,
+      produto,
+      preco,
+      peso,
+      porcentagem_adiantamento,
+      tipo_carga,
+      data_coleta,
+      data_entrega,
+      ativo,
+      agenciamento,
+      lona,
+      pedagio,
+      rastreamento,
+      empresaId,
+      especieId,
+      veiculoId,
+      carroceriaId,
+    } = req.body;
+    const and = {
+      AND: [
+        {
+          estado_destino: {
+            contains: estado_destino
+          }
+        },
+        {
+          estado_origem: {
+            contains: estado_origem
+          }
+        },
+        {
+          cidade_destino: {
+            contains: cidade_destino
+          }
+        },
+        {
+          cidade_origem: {
+            contains: cidade_origem
+          }
+        },
+        agenciamento != null ? { agenciamento: { equals: agenciamento } } : {},
+        lona != null ? { lona: { equals: lona } } : {},
+        pedagio != null ? { pedagio: { equals: pedagio } } : {},
+        rastreamento != null ? { rastreamento: { equals: rastreamento } } : {},
+        especieId != null ? { especieId: { equals: especieId } } : {}
+      ]
+    }
+    const count = await prisma.tb_frete.count({where: {...and}})
+    const fretes = await prisma.tb_frete.findMany({
+      where: {
+        ...and
+      },
+      include: {
+        Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
+        Carroceria_Frete: {
+          include: { carroceria: { select: { carroceria: true } } },
+        },
+      },
+    });
+    return res.json({ count: count, fretes: fretes });
   } catch (error) {
     return res.json({ error });
   }
@@ -184,7 +257,7 @@ async function updateFrete(req, res) {
         rastreamento,
         empresaId,
         especieId,
-      },include: {
+      }, include: {
         Veiculo_Frete: { include: { veiculo: { select: { veiculo: true } } } },
         Carroceria_Frete: {
           include: { carroceria: { select: { carroceria: true } } },
@@ -223,3 +296,4 @@ module.exports.findAllFrete = findAllFrete;
 module.exports.findFrete = findFrete;
 module.exports.updateFrete = updateFrete;
 module.exports.deleteFrete = deleteFrete;
+module.exports.findFilterFrete = findFilterFrete

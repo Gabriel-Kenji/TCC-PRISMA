@@ -92,6 +92,7 @@ routes.get("/fretes", FretesController.findAllFrete);
 routes.get("/fretes/:id", FretesController.findFrete);
 routes.put("/fretes/:id", middlewareLoginEmpresa.LoginEmpresa, FretesController.updateFrete);
 routes.delete("/fretes/:id", middlewareLoginEmpresa.LoginEmpresa, FretesController.deleteFrete);
+routes.get("/fretes_filter", FretesController.findFilterFrete);
  
 
 // ROTAS PROCURA FRETES
