@@ -1,7 +1,9 @@
 const PrismaClient = require("@prisma/client");
-const axios = require('axios');
+const fetch = require('node-fetch');
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
 const ProcuraCaminhoneiros = require('./ProcuraCaminhoneiros.js')
+const getCidadeUF = require('./getCidadeUF.js')
+
 
 let datetime = require("node-datetime");
 
@@ -99,6 +101,12 @@ async function findAllFrete(req, res) {
         },
       },
     });
+    for(let i = 0; i < count; i++) {
+      fretes[i].nm_cidade_origem = await getCidadeUF.getCidade(fretes[i].cidade_origem);
+      fretes[i].nm_cidade_destino = await getCidadeUF.getCidade(fretes[i].cidade_destino);
+      fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
+      fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
+    }
     return res.json({ count: count, fretes: fretes });
   } catch (error) {
     return res.json({ error });
@@ -161,7 +169,7 @@ async function findFilterFrete(req, res) {
       ]
     }
     const count = await prisma.tb_frete.count({where: {...and}})
-    const fretes = await prisma.tb_frete.findMany({
+    let fretes = await prisma.tb_frete.findMany({
       where: {
         ...and
       },
@@ -170,8 +178,15 @@ async function findFilterFrete(req, res) {
         Carroceria_Frete: {
           include: { carroceria: { select: { carroceria: true } } },
         },
-      },
+      }
     });
+    for(let i = 0; i < count; i++) {
+      fretes[i].nm_cidade_origem = await getCidadeUF.getCidade(fretes[i].cidade_origem);
+      fretes[i].nm_cidade_destino = await getCidadeUF.getCidade(fretes[i].cidade_destino);
+      fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
+      fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
+    }
+    
     return res.json({ count: count, fretes: fretes });
   } catch (error) {
     return res.json({ error });
@@ -190,6 +205,13 @@ async function findFrete(req, res) {
         },
       },
     });
+    
+    frete.nm_cidade_origem = await getCidadeUF.getCidade(frete.cidade_origem);
+    frete.nm_cidade_destino = await getCidadeUF.getCidade(frete.cidade_destino);
+    frete.sg_estado_origem = await getCidadeUF.getUF(frete.estado_origem);
+    frete.sg_estado_destino = await getCidadeUF.getUF(frete.estado_destino);
+
+    
     if (!frete) {
       return res.json({
         error: "Não foi possivel encontrar esse frete",
