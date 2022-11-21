@@ -104,8 +104,8 @@ async function findAllFrete(req, res) {
     for(let i = 0; i < count; i++) {
       fretes[i].nm_cidade_origem = await getCidadeUF.getCidade(fretes[i].cidade_origem);
       fretes[i].nm_cidade_destino = await getCidadeUF.getCidade(fretes[i].cidade_destino);
-      fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
-      fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
+      // fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
+      // fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
     }
     return res.json({ count: count, fretes: fretes });
   } catch (error) {
@@ -183,8 +183,8 @@ async function findFilterFrete(req, res) {
     for(let i = 0; i < count; i++) {
       fretes[i].nm_cidade_origem = await getCidadeUF.getCidade(fretes[i].cidade_origem);
       fretes[i].nm_cidade_destino = await getCidadeUF.getCidade(fretes[i].cidade_destino);
-      fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
-      fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
+      // fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
+      // fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
     }
     
     return res.json({ count: count, fretes: fretes });
@@ -208,8 +208,8 @@ async function findFrete(req, res) {
     
     frete.nm_cidade_origem = await getCidadeUF.getCidade(frete.cidade_origem);
     frete.nm_cidade_destino = await getCidadeUF.getCidade(frete.cidade_destino);
-    frete.sg_estado_origem = await getCidadeUF.getUF(frete.estado_origem);
-    frete.sg_estado_destino = await getCidadeUF.getUF(frete.estado_destino);
+    // frete.sg_estado_origem = await getCidadeUF.getUF(frete.estado_origem);
+    // frete.sg_estado_destino = await getCidadeUF.getUF(frete.estado_destino);
 
     
     if (!frete) {
