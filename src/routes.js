@@ -37,6 +37,10 @@ const routes = new Router.Router();
 
 // ROTAS EMPRESAS
 
+routes.get("/teste", (req, res) => {
+    return res.json({ teste: "teste" })
+})
+
 routes.post("/empresas", ValidationEmpresa.validatiorEmpresa, EmpresasController.createEmpresas);
 routes.get("/empresas", EmpresasController.findAllEmpresas);
 routes.get("/empresas/:cnpj", EmpresasController.findEmpresa);
