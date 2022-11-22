@@ -33,6 +33,12 @@ async function createFrete(req, res) {
       veiculoId,
       carroceriaId,
     } = req.body;
+    console.log(empresaId)
+    const nm_cidade_destino = await getCidadeUF.getCidade(cidade_destino)
+    const nm_cidade_origem = await getCidadeUF.getCidade(cidade_origem)
+    const sg_estado_origem = await getCidadeUF.getUF(estado_origem)
+    const sg_estado_destino = await getCidadeUF.getUF(estado_destino)
+    console.log(nm_cidade_destino + sg_estado_destino + nm_cidade_origem + sg_estado_origem)
     const fretes = await prisma.tb_frete.create({
       data: {
         cidade_destino,
@@ -54,7 +60,11 @@ async function createFrete(req, res) {
         agenciamento,
         lona,
         pedagio,
-        rastreamento
+        rastreamento,
+        nm_cidade_destino,
+        nm_cidade_origem,
+        sg_estado_origem,
+        sg_estado_destino
       },
     });
 
@@ -101,12 +111,6 @@ async function findAllFrete(req, res) {
         },
       },
     });
-    for(let i = 0; i < count; i++) {
-      fretes[i].nm_cidade_origem = await getCidadeUF.getCidade(fretes[i].cidade_origem);
-      fretes[i].nm_cidade_destino = await getCidadeUF.getCidade(fretes[i].cidade_destino);
-      // fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
-      // fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
-    }
     return res.json({ count: count, fretes: fretes });
   } catch (error) {
     return res.json({ error });
@@ -180,13 +184,6 @@ async function findFilterFrete(req, res) {
         },
       }
     });
-    for(let i = 0; i < count; i++) {
-      fretes[i].nm_cidade_origem = await getCidadeUF.getCidade(fretes[i].cidade_origem);
-      fretes[i].nm_cidade_destino = await getCidadeUF.getCidade(fretes[i].cidade_destino);
-      // fretes[i].sg_estado_origem = await getCidadeUF.getUF(fretes[i].estado_origem);
-      // fretes[i].sg_estado_destino = await getCidadeUF.getUF(fretes[i].estado_destino);
-    }
-    
     return res.json({ count: count, fretes: fretes });
   } catch (error) {
     return res.json({ error });
@@ -204,14 +201,7 @@ async function findFrete(req, res) {
           include: { carroceria: { select: { carroceria: true } } },
         },
       },
-    });
-    
-    frete.nm_cidade_origem = await getCidadeUF.getCidade(frete.cidade_origem);
-    frete.nm_cidade_destino = await getCidadeUF.getCidade(frete.cidade_destino);
-    // frete.sg_estado_origem = await getCidadeUF.getUF(frete.estado_origem);
-    // frete.sg_estado_destino = await getCidadeUF.getUF(frete.estado_destino);
-
-    
+    });   
     if (!frete) {
       return res.json({
         error: "Não foi possivel encontrar esse frete",

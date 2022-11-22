@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = process.env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model tb_empresa {
@@ -50,13 +50,17 @@ model tb_caminhoneiro {
 model tb_frete {
   id                       String             @id @default(uuid())
   cidade_origem            String
+  nm_cidade_origem         String
   cidade_destino           String
+  nm_cidade_destino        String
   estado_origem            String
+  sg_estado_origem         String
   estado_destino           String
+  sg_estado_destino        String
   descricao                String?
   forma_pagamento          String?
   produto                  String?
-  preco                    String?             @default("A COMBINAR")
+  preco                    String?            @default("A COMBINAR")
   peso                     String?
   porcentagem_adiantamento String?
   tipo_carga               String?
