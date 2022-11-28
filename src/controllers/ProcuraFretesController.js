@@ -26,9 +26,11 @@ async function createProcuraFrete(req, res) {
     const sg_estado_origem = await getCidadeUF.getUF(estado_origem);
     let nm_cidade_destino = null;
     let sg_estado_destino = null;
+    console.log(cidade_destino)
     if(cidade_destino != null && cidade_destino != ""){
       nm_cidade_destino = await getCidadeUF.getCidade(cidade_destino);
     }
+    console.log(nm_cidade_destino)
     if(estado_destino != null && estado_destino != "")
       sg_estado_destino = await getCidadeUF.getUF(estado_destino);
       
