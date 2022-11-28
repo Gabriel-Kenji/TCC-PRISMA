@@ -97,20 +97,24 @@ model Carroceria_Frete {
 }
 
 model tb_procura_fretes {
-  id             String          @id @default(uuid())
-  cidade_origem  String
-  cidade_destino String?
-  estado_origem  String
-  estado_destino String?
-  data_inicio    DateTime
-  cpf            String
-  ativo          Boolean         @default(false)
-  agenciamento   Boolean?
-  lona           Boolean?
-  pedagio        Boolean?
-  rastreamento   Boolean?
-  especieId      Int?
-  caminhoneiro   tb_caminhoneiro @relation(fields: [cpf], references: [cpf])
+  id                String          @id @default(uuid())
+  cidade_origem     String
+  nm_cidade_origem  String
+  cidade_destino    String?
+  nm_cidade_destino String?
+  estado_origem     String
+  sg_estado_origem  String
+  estado_destino    String?
+  sg_estado_destino String?
+  data_inicio       DateTime
+  cpf               String
+  ativo             Boolean         @default(false)
+  agenciamento      Boolean?
+  lona              Boolean?
+  pedagio           Boolean?
+  rastreamento      Boolean?
+  especieId         Int?
+  caminhoneiro      tb_caminhoneiro @relation(fields: [cpf], references: [cpf])
 }
 
 model tc_especie {

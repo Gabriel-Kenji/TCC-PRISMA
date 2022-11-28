@@ -1,4 +1,5 @@
 const PrismaClient = require("@prisma/client");
+const getCidadeUF = require('./getCidadeUF.js')
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
 
@@ -20,6 +21,17 @@ async function createProcuraFrete(req, res) {
       especie,
       cpf,
     } = req.body;
+    
+    const nm_cidade_origem = await getCidadeUF.getCidade(cidade_origem);
+    const sg_estado_origem = await getCidadeUF.getUF(estado_origem);
+    let nm_cidade_destino = null;
+    let sg_estado_destino = null;
+    if(cidade_destino != null && cidade_destino != ""){
+      nm_cidade_destino = await getCidadeUF.getCidade(cidade_destino);
+    }
+    if(estado_destino != null && estado_destino != "")
+      sg_estado_destino = await getCidadeUF.getUF(estado_destino);
+      
     let Procurafretes  = await prisma.tb_procura_fretes.findMany({
       where:{
         cpf
@@ -39,7 +51,11 @@ async function createProcuraFrete(req, res) {
           lona,
           pedagio,
           rastreamento,
-          especieId: especie
+          especieId: especie,
+          nm_cidade_destino,
+          nm_cidade_origem,
+          sg_estado_origem,
+          sg_estado_destino
         },
         include: {
           caminhoneiro: {
@@ -67,7 +83,11 @@ async function createProcuraFrete(req, res) {
           lona,
           pedagio,
           rastreamento,
-          especieId: especie
+          especieId: especie,
+          nm_cidade_destino,
+          nm_cidade_origem,
+          sg_estado_origem,
+          sg_estado_destino
         },
         include: {
           caminhoneiro: {
@@ -81,7 +101,7 @@ async function createProcuraFrete(req, res) {
     return res.json(error);
   }
 }
-
+ 
 async function findAllProcuraFretes(req, res) {
   try {
     const procurafretes = await prisma.tb_procura_fretes.findMany({

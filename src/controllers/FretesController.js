@@ -67,7 +67,7 @@ async function createFrete(req, res) {
         sg_estado_destino
       },
     });
-
+ 
     fretes.veiculosFrete = [];
 
     for (const veiculosId of veiculoId) {
