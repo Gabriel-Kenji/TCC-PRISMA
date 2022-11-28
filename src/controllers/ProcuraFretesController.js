@@ -39,7 +39,6 @@ async function createProcuraFrete(req, res) {
         cpf
       }
     })
-    console.log(Procurafretes);
     if(Procurafretes.length == 0){
       Procurafretes = await prisma.tb_procura_fretes.create({
         data: {
@@ -68,7 +67,7 @@ async function createProcuraFrete(req, res) {
       });
       return res.json({ Procurafretes });
     }else{
-      
+      console.log(Procurafretes[0].id)
       const id = Procurafretes[0].id
       const updateProcurafretes = await prisma.tb_procura_fretes.update({
         where: {
