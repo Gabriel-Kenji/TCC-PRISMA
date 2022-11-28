@@ -39,6 +39,7 @@ async function createProcuraFrete(req, res) {
         cpf
       }
     })
+    console.log(Procurafretes);
     if(Procurafretes.length == 0){
       Procurafretes = await prisma.tb_procura_fretes.create({
         data: {
