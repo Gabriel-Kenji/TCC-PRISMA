@@ -68,7 +68,7 @@ async function createProcuraFrete(req, res) {
       return res.json({ Procurafretes });
     }else{
       console.log(Procurafretes[0].id)
-      const id = Procurafretes[0].id
+      let id = Procurafretes[0].id
       const updateProcurafretes = await prisma.tb_procura_fretes.update({
         where: {
           id
@@ -100,6 +100,7 @@ async function createProcuraFrete(req, res) {
       return res.json({ updateProcurafretes });
     }
   } catch (error) {
+    console.log(error)
     return res.json(error);
   }
 }
