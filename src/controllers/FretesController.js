@@ -39,9 +39,10 @@ async function createFrete(req, res) {
     const sg_estado_origem = await getCidadeUF.getUF(estado_origem)
     const sg_estado_destino = await getCidadeUF.getUF(estado_destino)
     console.log(nm_cidade_destino + sg_estado_destino + nm_cidade_origem + sg_estado_origem)
+
+    
     const fretes = await prisma.tb_frete.create({
-      data: {
-        cidade_destino,
+      data: {cidade_destino,
         cidade_origem,
         data_coleta: datetime.create(data_coleta)._now,
         data_entrega: datetime.create(data_entrega)._now,
@@ -92,7 +93,10 @@ async function createFrete(req, res) {
       fretes.carroceriaFrete.push(carroceria);
     }
 
-    ProcuraCaminhoneiros.whatsTwilio(fretes, "http://" + req.get('host'), carroceriaId, veiculoId)
+    
+    ProcuraCaminhoneiros.smsTwilio(fretes, "http://" + req.get('host'), carroceriaId, veiculoId)
+
+
     return res.json({ fretes });
   } catch (error) {
     console.log(error)

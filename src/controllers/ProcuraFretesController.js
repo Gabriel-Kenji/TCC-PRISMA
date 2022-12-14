@@ -1,5 +1,7 @@
 const PrismaClient = require("@prisma/client");
 const getCidadeUF = require('./getCidadeUF.js')
+const twilio = require("./TwiloController.js")
+
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
 
@@ -21,25 +23,63 @@ async function createProcuraFrete(req, res) {
       especie,
       cpf,
     } = req.body;
-    
+
+    const and = {
+      AND: [
+        {
+          estado_destino: {
+            contains: estado_destino
+          }
+        },
+        {
+          estado_origem: {
+            contains: estado_origem
+          }
+        },
+        {
+          cidade_destino: {
+            contains: cidade_destino
+          }
+        },
+        {
+          cidade_origem: {
+            contains: cidade_origem
+          }
+        },
+        {
+          data_coleta:
+          {
+            gt: data_inicio
+          }
+        },
+        agenciamento ? { agenciamento: { equals: agenciamento } } : {},
+        lona ? { lona: { equals: lona } } : console.log("aa"),
+        pedagio ? { pedagio: { equals: pedagio } } : {},
+        rastreamento ? { rastreamento: { equals: rastreamento } } : {},
+        especie ? { especieId: { equals: especie } } : {}
+      ]
+    }
+
     const nm_cidade_origem = await getCidadeUF.getCidade(cidade_origem);
     const sg_estado_origem = await getCidadeUF.getUF(estado_origem);
     let nm_cidade_destino = null;
     let sg_estado_destino = null;
-    console.log(cidade_destino)
-    if(cidade_destino != null && cidade_destino != ""){
+
+
+    if (cidade_destino != null && cidade_destino != "")
       nm_cidade_destino = await getCidadeUF.getCidade(cidade_destino);
-    }
-    console.log(nm_cidade_destino)
-    if(estado_destino != null && estado_destino != "")
+
+    if (estado_destino != null && estado_destino != "")
       sg_estado_destino = await getCidadeUF.getUF(estado_destino);
-      
-    let Procurafretes  = await prisma.tb_procura_fretes.findMany({
-      where:{
+
+
+
+    let Procurafretes = await prisma.tb_procura_fretes.findMany({
+      where: {
         cpf
       }
     })
-    if(Procurafretes.length == 0){
+    if (Procurafretes.length == 0) {
       Procurafretes = await prisma.tb_procura_fretes.create({
         data: {
           cidade_destino,
@@ -65,9 +105,10 @@ async function createProcuraFrete(req, res) {
           },
         },
       });
+
+      procurarfretes(and, Procurafretes)
       return res.json({ Procurafretes });
-    }else{
-      console.log(cpf)
+    } else {
       let id = Procurafretes[0].id
       const updateProcurafretes = await prisma.tb_procura_fretes.update({
         where: {
@@ -97,6 +138,7 @@ async function createProcuraFrete(req, res) {
           },
         }
       })
+      procurarfretes(and, updateProcurafretes);
       return res.json({ updateProcurafretes });
     }
   } catch (error) {
@@ -104,7 +146,7 @@ async function createProcuraFrete(req, res) {
     return res.json(error);
   }
 }
- 
+
 async function findAllProcuraFretes(req, res) {
   try {
     const procurafretes = await prisma.tb_procura_fretes.findMany({
@@ -153,7 +195,7 @@ async function updateProcuraFrete(req, res) {
       data_inicio,
       cpf,
     } = req.body;
-    
+
     let procurafretes = await prisma.tb_procura_fretes.findUnique({
       where: { id },
     });
@@ -201,6 +243,54 @@ async function deleteProcuraFrete(req, res) {
     return res.json({ message: "Frete deletado com sucesso" });
   } catch (error) {
     return res.json({ error });
+  }
+}
+
+function teste(){
+  console.log("teste")
+}
+
+async function procurarfretes(and, procuraFrete) {
+  const compativel = await prisma.tb_frete.findMany({
+
+    where: {
+      ...and
+    },
+    include: {
+      Veiculo_Frete: true,
+      Carroceria_Frete: true
+    }
+
+  })
+  let cidade_origem = null
+  let cidade_destino = null
+  let uf_destino = null
+  let uf_origem = null
+  let cont = 0
+  for (const fretes of compativel) {
+    
+    cidade_origem = await getCidadeUF.getCidade(fretes.cidade_origem)
+    cidade_destino = await getCidadeUF.getCidade(fretes.cidade_destino)
+    uf_origem = await getCidadeUF.getUF(fretes.estado_origem)
+    uf_destino = await getCidadeUF.getUF(fretes.estado_destino)
+
+
+    for (const veiculo of fretes.Veiculo_Frete) {
+      for (const carroceria of fretes.Carroceria_Frete) {
+        
+        if (veiculo.veiculoId == procuraFrete.caminhoneiro.veiculo.id && carroceria.carroceriaId == procuraFrete.caminhoneiro.carroceria.id) {
+          cont += 1;
+          console.log(veiculo.veiculoId + " " + carroceria.carroceriaId)
+          if (cont <= 10) {
+            let text = "Um novo Frete foi encontrado \n \n" +  "\n🚚Origem: " + procuraFrete.nm_cidade_origem + "/" + procuraFrete.sg_estado_origem + "\n📦Destino: " + procuraFrete.nm_cidade_destino + "/" + procuraFrete.sg_estado_destino + " \n💲Valor: " + fretes.preco
+            console.log(cont + " " + text + " " + fretes.id)
+            console.log(procuraFrete.caminhoneiro.celular)
+            
+            twilio.smsTwilio(text, procuraFrete.caminhoneiro.celular)
+          }
+        }
+      }
+    }
   }
 }
 

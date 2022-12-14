@@ -7,11 +7,10 @@ const twilio = require("./TwiloController.js")
 require('dotenv/config');
 
 const prisma = new PrismaClient.PrismaClient({ log: ["query", "info"] });
-// const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 let datetime = require("node-datetime");
 
-async function whatsTwilio(data, host, carroceriaId, veiculoId) {
+async function smsTwilio(data, host, carroceriaId, veiculoId) {
 
   try {
     const and = {
@@ -89,4 +88,4 @@ async function whatsTwilio(data, host, carroceriaId, veiculoId) {
   }
 }
 
-module.exports.whatsTwilio = whatsTwilio;
+module.exports.smsTwilio = smsTwilio;
